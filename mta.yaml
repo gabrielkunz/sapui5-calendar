@@ -1,3 +1,57 @@
 _schema-version: "3.2"
 ID: sapui5-calendar
 version: 0.0.1
+modules:
+- name: sapui5-calendar-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: sapui5-calendar-destination-service
+    parameters:
+      content-target: true
+  - name: sapui5-calendar_html_repo_host
+    parameters:
+      service-key:
+        name: sapui5-calendar_html_repo_host-key
+  - name: uaa_sapui5-calendar
+    parameters:
+      service-key:
+        name: uaa_sapui5-calendar-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: BP_sapui5_calendar_html_repo_host
+          ServiceInstanceName: sapui5-calendar-html5-app-host-service
+          ServiceKeyName: sapui5-calendar_html_repo_host-key
+          sap.cloud.service: BP
+        - Authentication: OAuth2UserTokenExchange
+          Name: BP_uaa_sapui5_calendar
+          ServiceInstanceName: sapui5-calendar-xsuaa-service
+          ServiceKeyName: uaa_sapui5-calendar-key
+          sap.cloud.service: BP
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: sapui5-calendar-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: sapui5-calendar-destination-service
+    service-plan: lite
+- name: sapui5-calendar_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: sapui5-calendar-html5-app-host-service
+    service-plan: app-host
+- name: uaa_sapui5-calendar
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: sapui5-calendar-xsuaa-service
+    service-plan: application
