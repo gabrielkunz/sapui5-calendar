@@ -17,7 +17,7 @@ The app can be started outside SAP BTP environment with the following requiremen
 foo@bar ~ % git clone https://github.com/gabrielkunz/sapui5-calendar.git
 foo@bar ~ % cd calendar/
 ```
-2. Install all dependencies
+2. Install all dependencies.
 ```console
 foo@bar ~ % npm install
 ```
@@ -27,4 +27,4 @@ foo@bar ~ % npm install
 ```console
 foo@bar ~ % npm start
 ```
-2. http://localhost:8080/index.html will request the ES5-002 credentials for the Gateway Server
+2. Enter your ES5 credentials on http://localhost:8080/index.html page when requested.
