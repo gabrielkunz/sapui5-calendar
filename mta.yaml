@@ -32,12 +32,45 @@ modules:
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
+- name: sapui5-calendar-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: sapui5-calendar_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - nscalendar.zip
+      name: nscalendar
+      target-path: resources/
+- name: nscalendar
+  type: html5
+  path: calendar
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
 resources:
 - name: sapui5-calendar-destination-service
   type: org.cloudfoundry.managed-service
   parameters:
     config:
       HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
       version: 1.0.0
     service: destination
     service-name: sapui5-calendar-destination-service
@@ -55,3 +88,5 @@ resources:
     service: xsuaa
     service-name: sapui5-calendar-xsuaa-service
     service-plan: application
+parameters:
+  deploy_mode: html5-repo
